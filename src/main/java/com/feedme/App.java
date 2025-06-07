@@ -65,6 +65,7 @@ public class App {
                     exit = true;
                     break;
                 case "r":
+                    System.out.print("\033[H\033[2J"); // clears Linux terminal only
                     break;
                 default:
                     System.out.println("Unknown command!");
