@@ -3,14 +3,13 @@ package com.feedme;
 import com.feedme.model.Order;
 import com.feedme.worker.CookingBot;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 
 public class App {
-    public static void main(String[] args) throws InterruptedException, IOException {
+    public static void main(String[] args) throws InterruptedException {
         BlockingQueue<Order> vipQueue = new PriorityBlockingQueue<>();
         BlockingQueue<Order> normalQueue = new PriorityBlockingQueue<>();
         BlockingQueue<Order> completedQueue = new LinkedBlockingQueue<>();
@@ -19,13 +18,14 @@ public class App {
         int orderNumber = 1;
         int botNumber = 1;
 
-        while (!exit) {
-            Scanner scanner = new Scanner(System.in);
 
+        Scanner scanner = new Scanner(System.in);
+        while (!exit) {
             System.out.println("McDonald Order Controller");
             System.out.println("=========================");
             printPendingOrders(vipQueue, normalQueue);
             printCompletedOrders(completedQueue);
+            printBots(cookingBots);
             System.out.println("""
                     press 'a' for new normal order
                     press 's' for new vip order
@@ -35,7 +35,8 @@ public class App {
                     press 'q' to exit
                     """);
             System.out.print(": ");
-            String input = scanner.nextLine().toLowerCase().trim();
+            String input = scanner.nextLine().trim().toLowerCase();
+
             switch (input) {
                 case "a":
                     normalQueue.put(new Order(orderNumber, false));
@@ -52,7 +53,7 @@ public class App {
                     botNumber += 1;
                     break;
                 case "x":
-                    if(cookingBots.isEmpty()){
+                    if (cookingBots.isEmpty()) {
                         break;
                     }
                     CookingBot removedCookingBot = cookingBots.pop();
@@ -63,7 +64,8 @@ public class App {
                     exit = true;
                     break;
                 case "r":
-                    Runtime.getRuntime().exec("clear");
+                    System.out.print("\033[H\033[2J");
+                    System.out.flush();
                     break;
                 default:
                     System.out.println("Unknown command!");
@@ -89,13 +91,24 @@ public class App {
 
         for (Order order : completedQueue) {
             stringBuilder.append("  - Order ID: ").append(order.getId());
-            if(order.isVip()){
+            if (order.isVip()) {
                 stringBuilder.append(" (VIP)\n");
-            }else{
+            } else {
                 stringBuilder.append("\n");
             }
         }
 
+        System.out.println(stringBuilder);
+    }
+
+    public static void printBots(Deque<CookingBot> cookingBots) {
+        StringBuilder stringBuilder = new StringBuilder("Bots:\n");
+        for (CookingBot cookingBot : cookingBots) {
+            stringBuilder
+                    .append("  - Bot ID: ").append(cookingBot.getName())
+                    .append(" (")
+                    .append(cookingBot.getBotStatus()).append(")\n");
+        }
         System.out.println(stringBuilder);
     }
 }
