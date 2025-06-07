@@ -41,3 +41,6 @@ You may demostrate your final funtioning prototype with **one and only one** of 
 - Ensure that you have Java 17/ jdk17 + Maven installed on your machine. It is expected that you are running this in a Linux environment.
 - At the root level, run `mvn clean install -DskipTests`.
 - Run the program using the command `java -jar target/mcdonald-cooking-bot-controller-1.0-SNAPSHOT.jar `.
+
+### Optimizations & Concerns
+- tbc...
