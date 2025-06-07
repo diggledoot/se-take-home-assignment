@@ -43,4 +43,12 @@ You may demostrate your final funtioning prototype with **one and only one** of 
 - Run the program using the command `java -jar target/mcdonald-cooking-bot-controller-1.0-SNAPSHOT.jar `.
 
 ### Optimizations & Concerns
-- tbc...
+#### Optimizations
+- Use of `BlockingQueue` to allow thread-safe coordination between consumer and producer when processing `Order` objects.
+- Use of `Comparator` on the `Order` object to allow ordering on insertion into `PriorityBlockingQueue` data structure.
+- Use of ANSI escape sequences `\033[H\033[2J` for cleaner UI without redrawing manually.
+
+#### Concerns
+- Use of ANSI escape sequences applicable only to Linux environments.
+- Tight coupling to console input e.g. `System.in` and `System.out`.
+- Use of raw `Thread` instead of `ExecutorService` to manage thread lifecycle.
