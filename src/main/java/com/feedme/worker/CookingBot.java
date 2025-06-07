@@ -10,7 +10,7 @@ import lombok.Setter;
 import java.util.concurrent.BlockingQueue;
 
 @Getter
-@Setter(AccessLevel.PRIVATE)
+@Setter
 public class CookingBot extends Thread {
     private final BlockingQueue<Order> vipQueue;
     private final BlockingQueue<Order> normalQueue;
@@ -21,6 +21,7 @@ public class CookingBot extends Thread {
     private Order currentOrder;
 
     private static final long ONE_SECOND = 1000;
+    private int cookingIteration = 10;
 
     public CookingBot(
             BlockingQueue<Order> vipQueue,
@@ -60,7 +61,7 @@ public class CookingBot extends Thread {
                 setBotStatus(BotStatus.RUNNING);
                 getCurrentOrder().setOrderStatus(OrderStatus.COOKING);
 
-                for (int i = 0; i < 10 && running; i++) {
+                for (int i = 0; i < cookingIteration && running; i++) {
                     Thread.sleep(ONE_SECOND);
                 }
 
