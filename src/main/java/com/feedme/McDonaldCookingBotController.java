@@ -8,7 +8,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 
-public class App {
+public class McDonaldCookingBotController {
     public static void main(String[] args) throws InterruptedException {
         BlockingQueue<Order> vipQueue = new PriorityBlockingQueue<>();
         BlockingQueue<Order> normalQueue = new PriorityBlockingQueue<>();

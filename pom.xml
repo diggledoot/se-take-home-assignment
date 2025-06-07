@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.feedme</groupId>
-    <artifactId>temp-app</artifactId>
+    <artifactId>mcdonald-cooking-bot-controller</artifactId>
     <packaging>jar</packaging>
     <build>
         <plugins>
@@ -21,7 +21,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.feedme.App</mainClass>
+                            <mainClass>com.feedme.McDonaldCookingBotController</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -29,7 +29,7 @@
         </plugins>
     </build>
     <version>1.0-SNAPSHOT</version>
-    <name>temp-app</name>
+    <name>mcdonald-cooking-bot-controller</name>
     <url>http://maven.apache.org</url>
     <dependencies>
         <!-- junit -->
