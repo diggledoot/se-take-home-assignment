@@ -18,8 +18,8 @@ public class App {
         int orderNumber = 1;
         int botNumber = 1;
 
-
         Scanner scanner = new Scanner(System.in);
+
         while (!exit) {
             System.out.println("McDonald Order Controller");
             System.out.println("=========================");
@@ -35,6 +35,7 @@ public class App {
                     press 'q' to exit
                     """);
             System.out.print(": ");
+            System.out.flush();
             String input = scanner.nextLine().trim().toLowerCase();
 
             switch (input) {
