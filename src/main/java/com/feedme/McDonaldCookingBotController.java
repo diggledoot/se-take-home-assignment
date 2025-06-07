@@ -55,6 +55,8 @@ public class McDonaldCookingBotController {
                     break;
                 case "x":
                     if (cookingBots.isEmpty()) {
+                        System.out.println("No bots to remove!");
+                        waitForEnter(scanner);
                         break;
                     }
                     CookingBot removedCookingBot = cookingBots.pop();
@@ -70,14 +72,22 @@ public class McDonaldCookingBotController {
                     vipQueue.clear();
                     normalQueue.clear();
                     completedQueue.clear();
+                    System.out.println("Exiting program! Bye!");
+                    waitForEnter(scanner);
                     break;
                 case "r":
                     break;
                 default:
                     System.out.println("Unknown command!");
+                    waitForEnter(scanner);
             }
             refreshScreen();
         }
+    }
+
+    public static void waitForEnter(Scanner scanner){
+        System.out.println("Press enter to continue...");
+        scanner.nextLine();
     }
 
     public static void refreshScreen(){
