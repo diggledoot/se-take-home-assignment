@@ -3,7 +3,6 @@ package com.feedme.worker;
 import com.feedme.constant.BotStatus;
 import com.feedme.constant.OrderStatus;
 import com.feedme.model.Order;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
