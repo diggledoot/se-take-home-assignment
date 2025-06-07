@@ -7,26 +7,33 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.BlockingQueue;
 
-@Setter(AccessLevel.PRIVATE)
 @Getter
+@Setter(AccessLevel.PRIVATE)
 public class CookingBot extends Thread {
-    private final BlockingDeque<Order> orderQueue;
-    private final BlockingDeque<Order> completedQueue;
+    private final BlockingQueue<Order> vipQueue;
+    private final BlockingQueue<Order> normalQueue;
+    private final BlockingQueue<Order> completedQueue;
 
     private boolean running;
-    private BotStatus status;
+    private BotStatus botStatus;
     private Order currentOrder;
 
     private static final long ONE_SECOND = 1000;
 
-    public CookingBot(BlockingDeque<Order> orderQueue, BlockingDeque<Order> completedQueue, String name) {
+    public CookingBot(
+            BlockingQueue<Order> vipQueue,
+            BlockingQueue<Order> normalQueue,
+            BlockingQueue<Order> completedQueue,
+            String name
+    ) {
         super(name);
-        this.orderQueue = orderQueue;
+        this.vipQueue = vipQueue;
+        this.normalQueue = normalQueue;
         this.completedQueue = completedQueue;
         this.running = true;
-        this.status = BotStatus.IDLE;
+        this.botStatus = BotStatus.IDLE;
         this.currentOrder = null;
     }
 
@@ -34,10 +41,24 @@ public class CookingBot extends Thread {
     public void run() {
         while (running) {
             try {
-                setStatus(BotStatus.IDLE);
-                setCurrentOrder(orderQueue.takeFirst()); // blocks until the queue has an order
-                setStatus(BotStatus.RUNNING);
-                currentOrder.setOrderStatus(OrderStatus.COOKING);
+                setBotStatus(BotStatus.IDLE);
+
+                // poll vip queue, if empty, poll normal queue
+                Order order = getVipQueue().poll();
+                if (order == null) {
+                    order = getNormalQueue().poll();
+                }
+
+                // if normal queue is empty, idle the bot
+                if (order == null) {
+                    Thread.sleep(ONE_SECOND);
+                    setBotStatus(BotStatus.IDLE);
+                    continue;
+                }
+
+                setCurrentOrder(order);
+                setBotStatus(BotStatus.RUNNING);
+                getCurrentOrder().setOrderStatus(OrderStatus.COOKING);
 
                 for (int i = 0; i < 10 && running; i++) {
                     Thread.sleep(ONE_SECOND);
@@ -45,15 +66,16 @@ public class CookingBot extends Thread {
 
                 if (running) {
                     getCurrentOrder().setOrderStatus(OrderStatus.COMPLETE);
-                    getCompletedQueue().put(getCurrentOrder());
+                    getCompletedQueue().put(currentOrder);
                 } else {
                     requeueCurrentOrder();
                 }
+
                 setCurrentOrder(null);
-            } catch (InterruptedException interruptedException) {
+            } catch (InterruptedException e) {
                 requeueCurrentOrder();
                 Thread.currentThread().interrupt();
-                break;
+                running = false;
             }
         }
     }
@@ -68,11 +90,11 @@ public class CookingBot extends Thread {
             getCurrentOrder().setOrderStatus(OrderStatus.PENDING);
             try {
                 if (getCurrentOrder().isVip()) {
-                    orderQueue.putFirst(getCurrentOrder());
+                    getVipQueue().put(currentOrder);
                 } else {
-                    orderQueue.putLast(getCurrentOrder());
+                    getNormalQueue().put(currentOrder);
                 }
-            } catch (InterruptedException interruptedException) {
+            } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
         }
