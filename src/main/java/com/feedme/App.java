@@ -25,7 +25,7 @@ public class App {
             System.out.println("=========================");
             printPendingOrders(vipQueue, normalQueue);
             printCompletedOrders(completedQueue);
-            printBots(cookingBots);
+            printCookingBots(cookingBots);
             System.out.println("""
                     press 'a' for new normal order
                     press 's' for new vip order
@@ -63,9 +63,15 @@ public class App {
                     break;
                 case "q":
                     exit = true;
+                    for (CookingBot bot : cookingBots) {
+                        bot.shutdown();
+                        bot.join();
+                    }
+                    vipQueue.clear();
+                    normalQueue.clear();
+                    completedQueue.clear();
                     break;
                 case "r":
-                    refreshScreen();
                     break;
                 default:
                     System.out.println("Unknown command!");
@@ -76,6 +82,7 @@ public class App {
 
     public static void refreshScreen(){
         System.out.print("\033[H\033[2J"); // clears Linux terminals only
+        System.out.flush();
     }
 
     public static void printPendingOrders(BlockingQueue<Order> vipQueue, BlockingQueue<Order> normalQueue) {
@@ -106,7 +113,7 @@ public class App {
         System.out.println(stringBuilder);
     }
 
-    public static void printBots(Deque<CookingBot> cookingBots) {
+    public static void printCookingBots(Deque<CookingBot> cookingBots) {
         StringBuilder stringBuilder = new StringBuilder("Bots:\n");
         for (CookingBot cookingBot : cookingBots) {
             stringBuilder
