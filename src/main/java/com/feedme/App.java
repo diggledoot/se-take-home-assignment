@@ -65,12 +65,17 @@ public class App {
                     exit = true;
                     break;
                 case "r":
-                    System.out.print("\033[H\033[2J"); // clears Linux terminal only
+                    refreshScreen();
                     break;
                 default:
                     System.out.println("Unknown command!");
             }
+            refreshScreen();
         }
+    }
+
+    public static void refreshScreen(){
+        System.out.print("\033[H\033[2J"); // clears Linux terminals only
     }
 
     public static void printPendingOrders(BlockingQueue<Order> vipQueue, BlockingQueue<Order> normalQueue) {
