@@ -36,3 +36,8 @@ You may demostrate your final funtioning prototype with **one and only one** of 
 - Testing, testing and testing. Make sure the prototype is functioning and meeting all the requirements.
 - Do not over engineering. Try to scope your working hour within 3 hours (1 hour per day). You may document all the optimization or technology concern that you think good to bring in the solution.
 - Complete the implementation as clean as possible, clean code is a strong plus point, do not bring in all the fancy tech stuff.
+
+### Running the CLI application
+- Ensure that you have Java 17/ jdk17 + Maven installed on your machine. It is expected that you are running this in a Linux environment.
+- At the root level, run `mvn clean install -DskipTests`.
+- Run the program using the command `java -jar target/mcdonald-cooking-bot-controller-1.0-SNAPSHOT.jar `.
