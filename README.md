@@ -50,5 +50,5 @@ You may demostrate your final funtioning prototype with **one and only one** of 
 
 #### Concerns
 - Use of ANSI escape sequences applicable only to Linux environments.
-- Tight coupling to console input e.g. `System.in` and `System.out`.
+- No auto refresh of the UI on input.
 - Use of raw `Thread` instead of `ExecutorService` to manage thread lifecycle.
